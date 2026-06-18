@@ -63,7 +63,7 @@ function ExperienceDetail() {
             <div className="mt-14">
               <p className="text-eyebrow text-accent">What makes it special</p>
               <ul className="mt-5 space-y-3">
-                {exp.special.map((s) => (
+                {exp.special.map((s: string) => (
                   <li key={s} className="flex items-start gap-3 text-base">
                     <Sparkles size={16} className="mt-1 shrink-0 text-accent" />
                     <span>{s}</span>
