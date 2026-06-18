@@ -9,38 +9,155 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HiddenRouteImport } from './routes/hidden'
+import { Route as HappeningRouteImport } from './routes/happening'
+import { Route as CultureRouteImport } from './routes/culture'
+import { Route as ConciergeRouteImport } from './routes/concierge'
+import { Route as AdventureRouteImport } from './routes/adventure'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExperienceSlugRouteImport } from './routes/experience.$slug'
 
+const HiddenRoute = HiddenRouteImport.update({
+  id: '/hidden',
+  path: '/hidden',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HappeningRoute = HappeningRouteImport.update({
+  id: '/happening',
+  path: '/happening',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CultureRoute = CultureRouteImport.update({
+  id: '/culture',
+  path: '/culture',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConciergeRoute = ConciergeRouteImport.update({
+  id: '/concierge',
+  path: '/concierge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdventureRoute = AdventureRouteImport.update({
+  id: '/adventure',
+  path: '/adventure',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExperienceSlugRoute = ExperienceSlugRouteImport.update({
+  id: '/experience/$slug',
+  path: '/experience/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/adventure': typeof AdventureRoute
+  '/concierge': typeof ConciergeRoute
+  '/culture': typeof CultureRoute
+  '/happening': typeof HappeningRoute
+  '/hidden': typeof HiddenRoute
+  '/experience/$slug': typeof ExperienceSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/adventure': typeof AdventureRoute
+  '/concierge': typeof ConciergeRoute
+  '/culture': typeof CultureRoute
+  '/happening': typeof HappeningRoute
+  '/hidden': typeof HiddenRoute
+  '/experience/$slug': typeof ExperienceSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/adventure': typeof AdventureRoute
+  '/concierge': typeof ConciergeRoute
+  '/culture': typeof CultureRoute
+  '/happening': typeof HappeningRoute
+  '/hidden': typeof HiddenRoute
+  '/experience/$slug': typeof ExperienceSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/adventure'
+    | '/concierge'
+    | '/culture'
+    | '/happening'
+    | '/hidden'
+    | '/experience/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/adventure'
+    | '/concierge'
+    | '/culture'
+    | '/happening'
+    | '/hidden'
+    | '/experience/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/adventure'
+    | '/concierge'
+    | '/culture'
+    | '/happening'
+    | '/hidden'
+    | '/experience/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdventureRoute: typeof AdventureRoute
+  ConciergeRoute: typeof ConciergeRoute
+  CultureRoute: typeof CultureRoute
+  HappeningRoute: typeof HappeningRoute
+  HiddenRoute: typeof HiddenRoute
+  ExperienceSlugRoute: typeof ExperienceSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/hidden': {
+      id: '/hidden'
+      path: '/hidden'
+      fullPath: '/hidden'
+      preLoaderRoute: typeof HiddenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/happening': {
+      id: '/happening'
+      path: '/happening'
+      fullPath: '/happening'
+      preLoaderRoute: typeof HappeningRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/culture': {
+      id: '/culture'
+      path: '/culture'
+      fullPath: '/culture'
+      preLoaderRoute: typeof CultureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/concierge': {
+      id: '/concierge'
+      path: '/concierge'
+      fullPath: '/concierge'
+      preLoaderRoute: typeof ConciergeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/adventure': {
+      id: '/adventure'
+      path: '/adventure'
+      fullPath: '/adventure'
+      preLoaderRoute: typeof AdventureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +165,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/experience/$slug': {
+      id: '/experience/$slug'
+      path: '/experience/$slug'
+      fullPath: '/experience/$slug'
+      preLoaderRoute: typeof ExperienceSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdventureRoute: AdventureRoute,
+  ConciergeRoute: ConciergeRoute,
+  CultureRoute: CultureRoute,
+  HappeningRoute: HappeningRoute,
+  HiddenRoute: HiddenRoute,
+  ExperienceSlugRoute: ExperienceSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
