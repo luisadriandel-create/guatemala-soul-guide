@@ -13,18 +13,20 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
+import { LanguageProvider, useT } from "../lib/i18n";
 
 function NotFoundComponent() {
+  const t = useT();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <p className="text-eyebrow text-accent">404</p>
-        <h1 className="mt-4 text-4xl text-display">This trail doesn't exist.</h1>
+        <h1 className="mt-4 text-4xl text-display">{t("notfound.title")}</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          The page you're looking for may have wandered off the map.
+          {t("notfound.body")}
         </p>
         <div className="mt-8">
-          <Link to="/" className="btn-ember">Back to Antigua</Link>
+          <Link to="/" className="btn-ember">{t("notfound.cta")}</Link>
         </div>
       </div>
     </div>
@@ -34,6 +36,7 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const t = useT();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
@@ -41,18 +44,18 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-3xl text-display">Something went off-trail</h1>
+        <h1 className="text-3xl text-display">{t("error.title")}</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Try again, or head back to the start.
+          {t("error.body")}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => { router.invalidate(); reset(); }}
             className="btn-ember"
           >
-            Try again
+            {t("error.try")}
           </button>
-          <a href="/" className="btn-outline-ink">Go home</a>
+          <a href="/" className="btn-outline-ink">{t("error.home")}</a>
         </div>
       </div>
     </div>
@@ -105,13 +108,15 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col bg-background text-foreground">
-        <SiteHeader />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <SiteFooter />
-      </div>
+      <LanguageProvider>
+        <div className="flex min-h-screen flex-col bg-background text-foreground">
+          <SiteHeader />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <SiteFooter />
+        </div>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }
