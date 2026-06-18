@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { events } from "@/lib/experiences";
 import { Calendar, MapPin } from "lucide-react";
+import { useEvents, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/happening")({
   head: () => ({
@@ -15,17 +15,18 @@ export const Route = createFileRoute("/happening")({
 });
 
 function HappeningPage() {
+  const t = useT();
+  const events = useEvents();
   return (
     <>
       <section className="border-b border-border/60 bg-mist/40">
         <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
-          <p className="text-eyebrow text-accent">Happening now</p>
+          <p className="text-eyebrow text-accent">{t("happening.eyebrow")}</p>
           <h1 className="mt-4 max-w-4xl text-display text-5xl sm:text-7xl">
-            A curated calendar, <span className="italic font-light">not a complete one.</span>
+            {t("happening.title1")} <span className="italic font-light">{t("happening.title2")}</span>
           </h1>
           <p className="mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Festivals, live music, artisan markets, and seasonal moments worth planning a trip around.
-            We list only what we'd actually attend.
+            {t("happening.sub")}
           </p>
         </div>
       </section>
@@ -54,13 +55,12 @@ function HappeningPage() {
         </div>
 
         <div className="mt-20 rounded-xl border border-border bg-card p-8 text-center sm:p-12">
-          <p className="text-eyebrow text-accent">Something specific in mind?</p>
-          <h3 className="mt-3 text-display text-3xl">We track more than we publish.</h3>
+          <p className="text-eyebrow text-accent">{t("happening.ctaEyebrow")}</p>
+          <h3 className="mt-3 text-display text-3xl">{t("happening.ctaTitle")}</h3>
           <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground">
-            If you're traveling on specific dates, ask our concierge what's happening.
-            We often know about smaller community events that never make it online.
+            {t("happening.ctaBody")}
           </p>
-          <Link to="/concierge" className="btn-ember mt-7 inline-flex">Ask the Concierge</Link>
+          <Link to="/concierge" className="btn-ember mt-7 inline-flex">{t("happening.ctaButton")}</Link>
         </div>
       </section>
     </>

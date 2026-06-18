@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CategoryHero } from "@/components/category-hero";
 import { ExperienceCard } from "@/components/experience-card";
-import { byCategory, categoryMeta } from "@/lib/experiences";
+import { categoryMeta } from "@/lib/experiences";
+import { useByCategory, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/culture")({
   head: () => ({
@@ -17,13 +18,14 @@ export const Route = createFileRoute("/culture")({
 });
 
 function CulturePage() {
-  const items = byCategory("culture");
+  const t = useT();
+  const items = useByCategory("culture");
   return (
     <>
       <CategoryHero
-        eyebrow="Culture"
-        title="Coffee, cuisine & craft."
-        intro="Twenty-two Mayan languages are still spoken here. The coffee is famous; the food deserves to be. These are the encounters that take you past the postcard — into kitchens, cooperatives, and family stories."
+        eyebrow={t("nav.culture")}
+        title={t("culture.title")}
+        intro={t("culture.intro")}
         image={categoryMeta.culture.image}
       />
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">

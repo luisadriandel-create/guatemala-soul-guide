@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CategoryHero } from "@/components/category-hero";
 import { ExperienceCard } from "@/components/experience-card";
-import { byCategory, categoryMeta } from "@/lib/experiences";
+import { categoryMeta } from "@/lib/experiences";
+import { useByCategory, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/hidden")({
   head: () => ({
@@ -17,13 +18,14 @@ export const Route = createFileRoute("/hidden")({
 });
 
 function HiddenPage() {
-  const items = byCategory("hidden");
+  const t = useT();
+  const items = useByCategory("hidden");
   return (
     <>
       <CategoryHero
-        eyebrow="Hidden Guatemala"
-        title="What most travelers miss."
-        intro="The soul of this project. Seasonal traditions, family invitations, places that don't show up on any list because the people who know them prefer to keep it that way. We share them because the right traveler — curious, respectful, slow — keeps them alive."
+        eyebrow={t("nav.hidden")}
+        title={t("hidden.title")}
+        intro={t("hidden.intro")}
         image={categoryMeta.hidden.image}
       />
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">

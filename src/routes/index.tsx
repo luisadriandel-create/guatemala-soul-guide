@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import heroAntigua from "@/assets/hero-antigua.jpg";
 import conciergeImg from "@/assets/concierge.jpg";
 import { ExperienceCard } from "@/components/experience-card";
-import { byCategory, categoryMeta, events } from "@/lib/experiences";
 import { ArrowRight, Calendar, MapPin } from "lucide-react";
+import { useByCategory, useEvents, useCategoryMeta, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,10 +19,13 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const t = useT();
+  const events = useEvents();
+  const getMeta = useCategoryMeta();
   const featured = [
-    byCategory("adventure")[0],
-    byCategory("culture")[0],
-    byCategory("hidden")[0],
+    useByCategory("adventure")[0],
+    useByCategory("culture")[0],
+    useByCategory("hidden")[0],
   ];
 
   return (
@@ -39,20 +42,20 @@ function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-background" />
           <div className="absolute inset-0 flex items-end">
             <div className="mx-auto w-full max-w-7xl px-5 pb-16 sm:px-8 sm:pb-24">
-              <p className="text-eyebrow text-bone/80">A curated travel guide · Guatemala</p>
+              <p className="text-eyebrow text-bone/80">{t("home.heroEyebrow")}</p>
               <h1 className="mt-5 max-w-4xl text-display text-5xl text-bone sm:text-7xl lg:text-8xl">
-                Start in Antigua.<br />
-                <span className="italic font-light">Explore the real Guatemala.</span>
+                {t("home.heroTitle1")}<br />
+                <span className="italic font-light">{t("home.heroTitle2")}</span>
               </h1>
               <p className="mt-6 max-w-xl text-base text-bone/85 sm:text-lg">
-                Curated recommendations for travelers who want more than the usual tourist checklist.
+                {t("home.heroSub")}
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href="#paths" className="btn-ember">
-                  Start Exploring <ArrowRight size={16} />
+                  {t("home.startExploring")} <ArrowRight size={16} />
                 </a>
                 <Link to="/concierge" className="inline-flex items-center justify-center gap-2 rounded-full border border-bone/40 px-6 py-3.5 text-sm font-semibold text-bone hover:bg-bone hover:text-ink transition">
-                  Talk to a Local
+                  {t("nav.talkToLocal")}
                 </Link>
               </div>
             </div>
@@ -64,17 +67,17 @@ function Home() {
       <section id="paths" className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
         <div className="grid items-end gap-6 sm:grid-cols-[1fr_auto]">
           <div>
-            <p className="text-eyebrow text-accent">Choose your path</p>
-            <h2 className="mt-4 text-display text-4xl sm:text-5xl">Three doors into Guatemala.</h2>
+            <p className="text-eyebrow text-accent">{t("home.choosePathEyebrow")}</p>
+            <h2 className="mt-4 text-display text-4xl sm:text-5xl">{t("home.choosePathTitle")}</h2>
           </div>
           <p className="max-w-md text-muted-foreground">
-            Every recommendation here is something we've experienced, vetted, and would send a friend to.
+            {t("home.choosePathSub")}
           </p>
         </div>
 
         <div className="mt-14 grid gap-8 md:grid-cols-3">
           {(["adventure", "culture", "hidden"] as const).map((key) => {
-            const m = categoryMeta[key];
+            const m = getMeta(key);
             return (
               <Link key={key} to={m.to} className="group block">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted">
@@ -92,7 +95,7 @@ function Home() {
                 </div>
                 <p className="mt-4 text-sm text-muted-foreground leading-relaxed">{m.blurb}</p>
                 <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold link-underline">
-                  Explore {m.title} <ArrowRight size={14} />
+                  {t("home.exploreLabel")} {m.title} <ArrowRight size={14} />
                 </span>
               </Link>
             );
@@ -105,11 +108,11 @@ function Home() {
         <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-eyebrow text-accent">Featured experiences</p>
-              <h2 className="mt-4 text-display text-4xl sm:text-5xl">Editor's picks, this season.</h2>
+              <p className="text-eyebrow text-accent">{t("home.featuredEyebrow")}</p>
+              <h2 className="mt-4 text-display text-4xl sm:text-5xl">{t("home.featuredTitle")}</h2>
             </div>
             <p className="max-w-sm text-sm text-muted-foreground">
-              One from each path. Hand-selected for what's happening right now.
+              {t("home.featuredSub")}
             </p>
           </div>
 
@@ -123,11 +126,11 @@ function Home() {
       <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-eyebrow text-accent">Happening now</p>
-            <h2 className="mt-4 text-display text-4xl sm:text-5xl">What's on, this month.</h2>
+            <p className="text-eyebrow text-accent">{t("home.happeningEyebrow")}</p>
+            <h2 className="mt-4 text-display text-4xl sm:text-5xl">{t("home.happeningTitle")}</h2>
           </div>
           <Link to="/happening" className="link-underline text-sm font-semibold">
-            View all events →
+            {t("home.viewAllEvents")}
           </Link>
         </div>
 
@@ -160,21 +163,20 @@ function Home() {
             <img src={conciergeImg} alt="A local concierge in Guatemala" loading="lazy" className="h-full w-full object-cover" />
           </div>
           <div>
-            <p className="text-eyebrow text-accent">Local concierge</p>
+            <p className="text-eyebrow text-accent">{t("home.conciergeEyebrow")}</p>
             <h2 className="mt-4 text-display text-4xl sm:text-5xl">
-              Need help planning? <span className="italic font-light">Talk to a local.</span>
+              {t("home.conciergeTitle1")} <span className="italic font-light">{t("home.conciergeTitle2")}</span>
             </h2>
             <p className="mt-5 max-w-md text-bone/75 leading-relaxed">
-              Skip the spreadsheets and travel forums. Send us a message and a real person in Antigua
-              will help you plan, point you to the right people, and answer the questions a guidebook can't.
+              {t("home.conciergeBody")}
             </p>
             <ul className="mt-8 space-y-2 text-sm text-bone/80">
-              <li>· Personalized recommendations from someone who lives here</li>
-              <li>· Languages: English · Español · <span className="text-bone/50">Français (coming soon)</span></li>
-              <li>· Free for travelers — we work with vetted local providers</li>
+              <li>{t("home.conciergeBullet1")}</li>
+              <li>{t("home.conciergeBullet2")}<span className="text-bone/50">{t("home.frenchSoon")}</span></li>
+              <li>{t("home.conciergeBullet3")}</li>
             </ul>
             <Link to="/concierge" className="mt-8 inline-flex btn-ember">
-              Talk to a Local Concierge <ArrowRight size={16} />
+              {t("home.conciergeCta")} <ArrowRight size={16} />
             </Link>
           </div>
         </div>
