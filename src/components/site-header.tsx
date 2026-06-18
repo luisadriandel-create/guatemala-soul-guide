@@ -1,17 +1,37 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-
-const NAV = [
-  { to: "/adventure", label: "Adventure" },
-  { to: "/culture", label: "Culture" },
-  { to: "/hidden", label: "Hidden Guatemala" },
-  { to: "/happening", label: "Happening Now" },
-  { to: "/concierge", label: "Concierge" },
-] as const;
+import { useLang, useT } from "@/lib/i18n";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const t = useT();
+  const { lang, setLang } = useLang();
+
+  const NAV = [
+    { to: "/adventure", label: t("nav.adventure") },
+    { to: "/culture", label: t("nav.culture") },
+    { to: "/hidden", label: t("nav.hidden") },
+    { to: "/happening", label: t("nav.happening") },
+    { to: "/concierge", label: t("nav.concierge") },
+  ] as const;
+
+  const LangToggle = ({ className = "" }: { className?: string }) => (
+    <div className={`inline-flex items-center rounded-full border border-border text-xs font-semibold overflow-hidden ${className}`}>
+      <button
+        type="button"
+        onClick={() => setLang("en")}
+        aria-pressed={lang === "en"}
+        className={`px-2.5 py-1 transition ${lang === "en" ? "bg-ink text-bone" : "text-foreground/70 hover:text-foreground"}`}
+      >EN</button>
+      <button
+        type="button"
+        onClick={() => setLang("es")}
+        aria-pressed={lang === "es"}
+        className={`px-2.5 py-1 transition ${lang === "es" ? "bg-ink text-bone" : "text-foreground/70 hover:text-foreground"}`}
+      >ES</button>
+    </div>
+  );
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur">
@@ -42,17 +62,23 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <Link to="/concierge" className="hidden lg:inline-flex btn-ember !py-2 !px-5 text-sm">
-          Talk to a Local
-        </Link>
+        <div className="hidden lg:flex items-center gap-3">
+          <LangToggle />
+          <Link to="/concierge" className="btn-ember !py-2 !px-5 text-sm">
+            {t("nav.talkToLocal")}
+          </Link>
+        </div>
 
-        <button
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border lg:hidden"
-        >
-          {open ? <X size={18} /> : <Menu size={18} />}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <LangToggle />
+          <button
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border"
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -69,7 +95,7 @@ export function SiteHeader() {
               </Link>
             ))}
             <Link to="/concierge" onClick={() => setOpen(false)} className="btn-ember mt-4 w-full">
-              Talk to a Local
+              {t("nav.talkToLocal")}
             </Link>
           </nav>
         </div>

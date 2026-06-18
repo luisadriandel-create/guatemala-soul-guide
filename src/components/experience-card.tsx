@@ -1,8 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import type { Experience } from "@/lib/experiences";
 import { ArrowUpRight } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 export function ExperienceCard({ exp, priority }: { exp: Experience; priority?: boolean }) {
+  const t = useT();
+  const label =
+    exp.category === "hidden" ? t("cat.hidden") :
+    exp.category === "culture" ? t("cat.culture") : t("cat.adventure");
   return (
     <Link
       to="/experience/$slug"
@@ -19,7 +24,7 @@ export function ExperienceCard({ exp, priority }: { exp: Experience; priority?: 
       </div>
       <div className="mt-4 flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-eyebrow text-accent">{exp.category === "hidden" ? "Hidden" : exp.category}</p>
+          <p className="text-eyebrow text-accent">{label}</p>
           <h3 className="mt-2 text-display text-2xl leading-tight">{exp.title}</h3>
           <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{exp.short}</p>
           <p className="mt-3 text-xs text-muted-foreground/80">{exp.location}</p>
